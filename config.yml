@@ -1,0 +1,338 @@
+attributes:
+    title: 
+        - tgt_title
+        - cmpt_title
+    
+    model_number :
+        - tgt_modelno
+        - comp_model_no
+        
+    brand :
+        - tgt_brand
+        - cmpt_brand
+        
+methods:
+    title: 
+        - levenshtein
+        - large_encoder
+        - medium_encoder
+        
+    model_number : 
+        - levenshtein
+        
+    brand :
+        - levenshtein
+        - large_encoder
+        - medium_encoder
+    
+model_object:
+   levenshtein: None
+   medium_encoder : spacy.load('en_core_web_md')
+   large_encoder : spacy.load('en_core_web_lg')
+   transformer : spacy.load('en_core_web_trf')
+   semantic : SentenceTransformer('multi-qa-mpnet-base-cos-v1')
+   
+classifiers:
+  Random Forest: A classification algorithm that employs a forest of decision trees to collectively classify data points with heightened accuracy.
+  SGD Classifier: Stochastic Gradient Descent Classifier is a linear classifier that uses SGD for optimization.
+  MLP Classifier: Multi-Layer Perceptron Classifier is a neural network-based classifier with multiple hidden layers.
+  Perceptron: A simple neural network architecture used for binary classification tasks.
+  Logistic Regression: A linear regression-based classifier that models the probability of belonging to a class.
+  Passive Aggressive Classifier: A linear classifier that makes updates based on incorrect predictions while maintaining a passive behavior.
+  Label Propagation: A semi-supervised classification algorithm that assigns labels to unlabeled data points based on their neighbors' labels.
+  Label Spreading: Similar to Label Propagation, but incorporates label distribution information.
+  Gradient Boosting: An ensemble learning method that combines multiple weak learners to create a strong classifier.
+  Quadratic Discriminant Analysis: A classification algorithm based on modeling class-specific covariance matrices.
+  HistGradientBoosting: A histogram-based variant of Gradient Boosting that is efficient for large datasets.
+  RidgeClassifierCV: Ridge Classifier with built-in cross-validation for regularization parameter selection.
+  AdaBoostClassifier: Adaptive Boosting algorithm that combines multiple weak classifiers to create a strong classifier.
+  ExtraTreesClassifier: An ensemble classifier similar to Random Forest but with different construction techniques.
+  KNeighborsClassifier: K-Nearest Neighbors Classifier assigns labels based on the class of the nearest neighbors.
+  BaggingClassifier: Bootstrap Aggregating algorithm that trains multiple classifiers on bootstrapped samples.
+  BernoulliNB: Naive Bayes classifier that assumes binary features and follows the Bernoulli distribution.
+  GaussianNB: Naive Bayes classifier assuming features follow a Gaussian distribution.
+  LinearDiscriminantAnalysis: A dimensionality reduction technique used as a linear classifier.
+  DecisionTreeClassifier: A classifier that makes decisions by recursively splitting data based on feature values.
+  NearestCentroid: A classifier that assigns the class label of the nearest centroid.
+  ExtraTreeClassifier: Extremely Randomized Trees classifier, similar to Random Forest but with randomized splits.
+  DummyClassifier: A baseline classifier that makes predictions using simple rules or strategies.
+  Isolation Forest: An anomaly detection algorithm that isolates data points by constructing decision trees.
+  Balanced Random Forest: A variant of Random Forest that handles imbalanced datasets by using balanced class weights.
+  Easy Ensemble Classifier: An ensemble classifier that combines multiple classifiers to handle class imbalance.
+  RUSBoost Classifier: A Boosting algorithm that applies Random Under-Sampling (RUS) to balance class distribution.
+  SMOTEBoost Classifier: A Boosting algorithm that combines Synthetic Minority Over-sampling Technique (SMOTE) with Boosting to address class imbalance.
+  SelfPaced Ensemble Classifier: A classification approach that adapts the learning process using self-paced learning techniques.
+  BalanceCascade Classifier: A classifier that mitigates class imbalance by iteratively reducing the majority class samples.
+  UnderBagging Classifier: A classifier that enhances diversity by training on bootstrapped subsets.
+  OverBoost Classifier: A classifier that combines weak learners through weighted voting for improved classification.
+  KMeans SMOTEBoost Classifier: A classifier that leverages KMeans SMOTE and Boosting for classification. 
+  OverBagging Classifier: A classifier that focuses on robustness through ensemble bagging techniques.
+  SMOTEBagging Classifier: A classifier combining SMOTE and Bagging to address class imbalance.
+  AdaUBoost Classifier: A classifier that adapts boosting based on data distribution.
+  AdaCost Classifier: A classifier designed for cost-sensitive classification tasks with varying misclassification costs.
+  AsymBoost Classifier: A classifier that emphasizes minority class examples in boosting.
+  Compatible AdaBoost Classifier: A classifier that combines weak classifiers using compatible learning rates.
+  Compatible Bagging Classifier: A classifier that combines Bagging with boosting using compatible learning rates.
+  XGBoost Classifier: An ensemble-based machine learning algorithm that leverages gradient boosting for accurate classification tasks.
+
+
+
+
+
+   
+model_grid:
+    Random Forest:
+      n_estimators: [100, 300, 500]
+      max_depth: [null, 10, 20]
+      min_samples_split: [2, 5, 10]
+      min_samples_leaf: [1, 2, 4]
+      class_weight: [null, 'balanced', 'balanced_subsample']
+      max_features: ['auto', 'sqrt', 'log2']
+
+    SGD Classifier:
+      alpha: [0.0001, 0.001, 0.01]
+      penalty: ['l2', 'l1', 'elasticnet']
+      l1_ratio: [0.15, 0.3, 0.5]
+      loss: ['log']
+
+    MLP Classifier:
+      hidden_layer_sizes:
+                      - [50]
+                      - [100]
+                      - [50, 50]
+      activation: ['relu', 'tanh']
+      alpha: [0.0001, 0.001, 0.01]
+
+    Perceptron:
+      alpha: [0.0001, 0.001, 0.01]
+      penalty: [null, 'l2', 'l1', 'elasticnet']
+      eta0: [0.01, 0.1, 0.5]
+
+    Logistic Regression:
+      C: [0.1, 1, 10]
+      penalty: ['l1', 'l2']
+      solver: ['liblinear', 'saga']
+      class_weight: [null, 'balanced']
+
+    Passive Aggressive Classifier:
+      C: [0.01, 0.1, 1]
+      loss: ['hinge', 'squared_hinge']
+
+    Label Propagation:
+      kernel: ['knn']
+      gamma: [0.1, 1, 10]
+      n_neighbors: [5, 10, 20]
+
+    Label Spreading:
+      kernel: ['knn']
+      gamma: [0.1, 1, 10]
+      n_neighbors: [5, 10, 20]
+
+    Gradient Boosting:
+      n_estimators: [50, 100, 150]
+      learning_rate: [0.01, 0.1, 0.2]
+      max_depth: [3, 5, 7]
+      min_samples_split: [2, 5, 10]
+      min_samples_leaf: [1, 2, 4]
+      subsample: [0.8, 0.9, 1.0]
+
+    Quadratic Discriminant Analysis:
+      reg_param: [0.0, 0.1, 0.2]
+
+    HistGradientBoosting:
+      learning_rate: [0.01, 0.1, 0.2]
+      max_iter: [100, 200, 300]
+      max_leaf_nodes: [15, 31, 63]
+      min_samples_leaf: [10, 20, 30]
+
+    RidgeClassifierCV:
+      alphas: [0.1, 1.0, 10.0]
+      store_cv_values: [True, False]
+      normalize: [True, False]
+
+    AdaBoostClassifier:
+      n_estimators: [50, 100, 200]
+      learning_rate: [0.01, 0.1, 1]
+      algorithm: ['SAMME', 'SAMME.R']
+
+    ExtraTreesClassifier:
+      n_estimators: [50, 100, 200]
+      max_depth: [null, 10, 20]
+      min_samples_split: [2, 5, 10]
+      min_samples_leaf: [1, 2, 4]
+      class_weight: [null, 'balanced', 'balanced_subsample']
+      max_features: ['auto', 'sqrt', 'log2']
+
+    KNeighborsClassifier:
+      n_neighbors: [3, 5, 10]
+      weights: ['uniform', 'distance']
+      algorithm: ['auto', 'ball_tree', 'kd_tree', 'brute']
+
+    BaggingClassifier:
+      n_estimators: [50, 100, 200]
+      max_samples: [1.0, 0.8, 0.6]
+      max_features: [1.0, 0.8, 0.6]
+      bootstrap: [True, False]
+      bootstrap_features: [True, False]
+
+    BernoulliNB:
+      alpha: [0.1, 0.5, 1.0]
+
+    GaussianNB:
+      var_smoothing: [1e-9, 1e-8, 1e-7]
+
+    LinearDiscriminantAnalysis:
+      solver: ['svd', 'lsqr', 'eigen']
+
+    DecisionTreeClassifier:
+      criterion: ['gini', 'entropy']
+      splitter: ['best', 'random']
+      max_depth: [null, 10, 20]
+      min_samples_split: [2, 5, 10]
+      min_samples_leaf: [1, 2, 4]
+      class_weight: [null, 'balanced']
+
+    NearestCentroid:
+      shrink_threshold: [null, 0.1, 0.5, 1.0]
+
+    ExtraTreeClassifier:
+      criterion: ['gini', 'entropy']
+      splitter: ['best', 'random']
+      max_depth: [null, 10, 20]
+      min_samples_split: [2, 5, 10]
+      min_samples_leaf: [1, 2, 4]
+      class_weight: [null, 'balanced']
+
+    DummyClassifier:
+      strategy: ['stratified', 'most_frequent', 'prior', 'uniform']
+      
+      
+    Isolation Forest:
+      n_estimators: [50, 100, 200]
+      contamination: [0.01, 0.05, 0.1]
+
+    Balanced Random Forest:
+      n_estimators: [50, 100, 200]
+      max_depth: [null, 10, 20]
+      min_samples_split: [2, 5, 10]
+      min_samples_leaf: [1, 2, 4]
+      class_weight: [ null,'balanced', 'balanced_subsample']
+      max_features: ['sqrt', 'log2']
+
+    Easy Ensemble Classifier:
+      n_estimators: [50, 100, 200]
+      bootstrap: [True, False]
+
+    RUSBoost Classifier:
+      n_estimators: [50, 100, 200]
+      learning_rate: [0.01, 0.1, 1.0]
+      algorithm: ['SAMME', 'SAMME.R']
+      early_termination: [True, False]
+
+    SMOTEBoost Classifier:
+      n_estimators: [50, 100, 200]
+      learning_rate: [0.01, 0.1, 1.0]
+      algorithm: ['SAMME', 'SAMME.R']
+      
+    SelfPaced Ensemble Classifier:
+      n_estimators: [50, 100, 200]
+      k_bin: [5,10]
+      soft_resample_flag: [True, False]
+      replacement: [True, False]
+      
+    BalanceCascade Classifier:
+     n_estimators: [50, 100, 200]
+     replacement: [True, False]
+     
+    UnderBagging Classifier:
+     n_estimators: [50, 100, 200]
+     max_samples: [1.0, 0.8, 0.6]
+     max_features: [1.0, 0.8, 0.6]
+     bootstrap: [True, False]
+     bootstrap_features: [True, False]
+     
+     
+    OverBoost Classifier:
+     n_estimators: [50, 100, 200]
+     learning_rate: [0.01, 0.1, 1.0]
+     algorithm: ['SAMME', 'SAMME.R']
+     
+    KMeans SMOTEBoost Classifier:
+     n_estimators: [50, 100, 200]
+     k_neighbors: [2, 3, 5, 10]
+     learning_rate: [0.01, 0.1, 1.0]
+     algorithm: ['SAMME', 'SAMME.R']
+     
+    OverBagging Classifier:
+     n_estimators: [50, 100, 200]
+     max_samples: [1.0, 0.8, 0.6]
+     bootstrap: [True, False]
+     bootstrap_features: [True, False]
+     
+    SMOTEBagging Classifier:
+     n_estimators: [50, 100, 200]
+     max_samples: [1.0, 0.8, 0.6]
+     k_neighbors: [1, 5, 10]
+     max_samples: [1.0, 0.8, 0.6]
+     max_features: [1.0, 0.8, 0.6]
+     bootstrap_features: [True, False]
+     oob_score: [True, False]
+     
+    AdaUBoost Classifier:
+     n_estimators: [50, 100, 200]
+     learning_rate: [0.01, 0.1, 1.0]
+     algorithm: ['SAMME', 'SAMME.R']
+     
+    AdaCost Classifier:
+     n_estimators: [50, 100, 200]
+     learning_rate: [0.01, 0.1, 1.0]
+     algorithm: ['SAMME', 'SAMME.R']
+     
+    AsymBoost Classifier:
+     n_estimators: [50, 100, 200]
+     learning_rate: [0.01, 0.1, 1.0]
+     algorithm: ['SAMME', 'SAMME.R']
+     
+    Compatible AdaBoost Classifier:
+     n_estimators: [50, 100, 200]
+     learning_rate: [0.01, 0.1, 1.0]
+     algorithm: ['SAMME', 'SAMME.R']
+     
+    Compatible Bagging Classifier:
+     n_estimators: [50, 100, 200]
+     algorithm: ['SAMME', 'SAMME.R']
+     
+    XGBoost Classifier:
+      n_estimators: [500]
+      learning_rate: [1]
+      max_depth: [10]
+      min_child_weight: [10]
+      subsample: [1.0]
+      colsample_bytree: [0.5, 1.0]
+      gamma: [0, 5]
+      reg_lambda: [0, 0.5, 1, 3]
+      reg_alpha: [0.5, 3]
+      scale_pos_weight: [1, 5]
+      tree_method: ['auto','hist']
+      booster: ['gbtree']
+      nthread: [1]
+
+    
+    
+     
+     
+     
+     
+     
+    
+      
+        
+
+
+
+
+
+
+
+   
+        
